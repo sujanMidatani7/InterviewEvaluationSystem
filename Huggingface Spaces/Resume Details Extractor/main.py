@@ -2,7 +2,9 @@ from PyPDF2 import PdfReader
 from langchain.chat_models import ChatOpenAI
 from kor import create_extraction_chain, Object, Text 
 from langchain.prompts.prompt import PromptTemplate
+from dotenv import load_dotenv
 
+load_dotenv()
 def gen_text(pdf_file):
     """
     Extracts text from a PDF file and returns the extracted text.
