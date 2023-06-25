@@ -27,14 +27,12 @@ The generated interview questions will be displayed on the console.
 
 For detailed documentation of the code and its functions, please refer to the source code comments.
 
-- `generate_questions(resume, role='', experience='')`: Generates interview questions based on the given resume, desired role, and experience.
+- `generate_questions(resume_details, role='', experience='')`: Generates interview questions based on the given resume, desired role, and experience.
 
 ## Libraries Used
 
 - `langchain`: A library that provides tools for working with language models and prompt generation.
 - `dotenv`: A library for loading environment variables from a `.env` file.
 
-## License
 
-This project is licensed under the [MIT License](LICENSE).
 
