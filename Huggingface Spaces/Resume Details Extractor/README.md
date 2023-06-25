@@ -35,6 +35,3 @@ For detailed documentation of the code and its functions, please refer to the so
 - `kor`: A library that provides methods for creating extraction chains for extracting structured data from text.
 - `dotenv`: A library for loading environment variables from a `.env` file.
 
-## License
-
-This project is licensed under the [MIT License](LICENSE).
