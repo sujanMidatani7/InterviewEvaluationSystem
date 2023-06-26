@@ -16,11 +16,10 @@ from gtts import gTTS
 # Initialize Flask app
 app = Flask(__name__)
 
-# Set OpenAI API key
-openai.api_key = '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'
+# Set OpenAI API Key
 
 # Set Pinecone API key and environment
-pc.init(api_key="f9571b23-70be-4556-893a-7342b0bb51d1", environment='us-central1-gcp')
+pc.init(api_key="", environment='')
 
 # Initialize global variables
 role = ''
