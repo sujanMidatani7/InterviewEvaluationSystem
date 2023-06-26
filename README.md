@@ -24,12 +24,17 @@ This project is a web application that allows users to upload their resume PDF, 
 ## Requirements
 
 . Python 3.7 or higher
+
 . Flask
+
 . Speech Recognition
+
 . Pinecone
+
 . Requests
 
 ## Installation
+
 To install the required packages, run:
 
 `pip install -r requirements.txt`
