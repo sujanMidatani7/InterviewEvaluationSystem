@@ -1,0 +1,22 @@
+<!-- questions.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Generated Questions</title>
+</head>
+<body>
+    <h1>Generated Questions</h1>
+    <form method="POST" action="{{ url_for('upload') }}" enctype="multipart/form-data">
+        {% for question in questions %}
+        <div class="question-block">
+            <p>{{ question }}</p>
+            <input type="file" name="audio" accept=".wav" required>
+            <input type="hidden" name="question" value="{{ question }}">
+            <input type="hidden" name="role" value="{{ role }}">
+            <input type="hidden" name="experience" value="{{ experience }}">
+        </div>
+        {% endfor %}
+        <input type="submit" value="Submit Answers">
+    </form>
+</body>
+</html>
