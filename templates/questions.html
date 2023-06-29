@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Interview Evaluation System - Questions</title>
+    <style>
+      .container {
+        text-align: center;
+        margin-top: 50px;
+      }
+
+      h1 {
+        color: #333;
+        font-size: 24px;
+        margin-bottom: 20px;
+      }
+
+      h2 {
+        color: #666;
+        font-size: 18px;
+        margin-bottom: 10px;
+      }
+
+      .question {
+        background-color: #f5f5f5;
+        border-radius: 5px;
+        padding: 10px;
+        margin-bottom: 10px;
+      }
+
+      p {
+        color: #333;
+        font-size: 16px;
+        margin: 0;
+      }
+
+      button {
+        background-color: #4caf50;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        cursor: pointer;
+        margin-top: 10px;
+      }
+
+      button:hover {
+        background-color: #45a049;
+      }
+
+      button:active {
+        background-color: #3e8e41;
+      }
+
+      button:focus {
+        outline: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Interview Evaluation System - Questions</h1>
+      <h2>Answer the following questions:</h2>
+      <form method="POST" action="/record">
+        {% for question in questions %}
+        <div class="question">
+          <p>{{ question }}</p>
+          <button type="submit" name="question" value="{{ question }}">
+            Record Answer
+          </button>
+        </div>
+        {% endfor %}
+      </form>
+    </div>
+  </body>
+</html>
