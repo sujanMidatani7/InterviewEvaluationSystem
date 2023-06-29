@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Interview Evaluation System</title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='styles.css') }}"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Interview Evaluation System</h1>
+      <form method="POST" action="/" enctype="multipart/form-data">
+        <label for="pdf_file">Resume PDF:</label>
+        <input type="file" name="pdf_file" required /><br /><br />
+        <label for="role">Role:</label>
+        <input type="text" name="role" required /><br /><br />
+        <label for="experience">Experience:</label>
+        <input type="text" name="experience" required /><br /><br />
+        <input type="submit" value="Start Interview" />
+      </form>
+    </div>
+  </body>
+</html>
