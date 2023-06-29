@@ -1,10 +1,48 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Result</title>
-</head>
-<body>
-    <h1>Result</h1>
-    <p>{{ result }}</p>
-</body>
+  <head>
+    <title>Interview Evaluation System - Result</title>
+    <style>
+      .container {
+        text-align: center;
+        margin-top: 50px;
+      }
+
+      h1 {
+        color: #333;
+        font-size: 24px;
+        margin-bottom: 20px;
+      }
+
+      h2 {
+        color: #666;
+        font-size: 18px;
+        margin-bottom: 10px;
+      }
+
+      .res {
+        background-color: #f5f5f5;
+        border-radius: 5px;
+        padding: 10px;
+        margin-bottom: 10px;
+      }
+
+      p {
+        color: #333;
+        font-size: 16px;
+        margin: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Interview Evaluation System - Result</h1>
+      <h2>Final Grading:</h2>
+      {% for q in final_grading %}
+      <div class="res">
+        <p>{{ q }}</p>
+      </div>
+      {% endfor %}
+    </div>
+  </body>
 </html>
