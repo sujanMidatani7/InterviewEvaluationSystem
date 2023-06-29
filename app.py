@@ -15,8 +15,8 @@ json_dict = ''
 
 csv_data = [[]]
 app = Flask(__name__, static_folder='static')
-openai.api_key = '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'
-pc.init(api_key="f9571b23-70be-4556-893a-7342b0bb51d1", environment = 'us-central1-gcp')
+openai.api_key = ''
+pc.init(api_key="", environment = '')
 
 def gen_embed(text):
     response = openai.Embedding.create(
