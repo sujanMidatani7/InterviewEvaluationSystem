@@ -1,0 +1,75 @@
+/* styles.css */
+
+/* Reset default margins and paddings */
+body, h1, p, ul, li {
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Set a background color for the body */
+  body {
+    background-color: #f2f2f2;
+  }
+  
+  /* Container styles */
+  .container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .question-block {
+    background-color: #f9f9f9;
+    border-radius: 4px;
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .question-block p {
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  audio {
+    display: block;
+    margin-bottom: 10px;
+  }
+  
+  a {
+    display: inline-block;
+    margin-top: 10px;
+    color: #333;
+    text-decoration: none;
+  }
+  
+  input[type="submit"] {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  a.back-link {
+    display: inline-block;
+    margin-top: 20px;
+    color: #333;
+    text-decoration: none;
+  }
+  
+  a.back-link::before {
+    content: '\2190 ';
+  }
+  
+  
