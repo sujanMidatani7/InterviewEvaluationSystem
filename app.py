@@ -169,7 +169,7 @@ def home():
     return '''
         <html>
         <head>
-            <title>Resume Questions Generator</title>
+            <title>Interview Simulation System</title>
             <style>
                 .question-block {
                     margin-bottom: 20px;
