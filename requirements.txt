@@ -1,0 +1,10 @@
+gtts
+gradio_client
+flask
+werkzeug
+SpeechRecognition
+sounddevice 
+openai
+pinecone-client
+requests
+python-dotenv
