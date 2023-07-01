@@ -1,55 +1,59 @@
-from flask import Flask, request, render_template_string, send_file, render_template,url_for
+from flask import Flask, request, render_template_string, send_file, render_template, url_for
 import json
 import pinecone as pc
-
-
 import openai
-import speech_recognition as sr
 from werkzeug.utils import secure_filename
 from gradio_client import Client
 from gtts import gTTS
-role=''
-experience=''
-question=''
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+role = ''
+experience = ''
+question = ''
 json_dict = ''
 
 csv_data = [[]]
 app = Flask(__name__, static_folder='static')
-openai.api_key = ''
-pc.init(api_key="", environment = '')
+
+
+pc.init(api_key=os.getenv("API_KEY"), environment=os.getenv("ENVIRONMENT"))
+
 
 def gen_embed(text):
     response = openai.Embedding.create(
-    input=text,
-    engine="text-embedding-ada-002")
+        input=text,
+        engine="text-embedding-ada-002")
     return response['data'][0]['embedding']
+
+
 def finalizePC():
     index = pc.Index('ques-ans')
     res = index.query(
-        vector = [0]*1536,
-        top_k = index.describe_index_stats()['total_vector_count'],
+        vector=[0]*1536,
+        top_k=index.describe_index_stats()['total_vector_count'],
         include_metadata=True,
     )
     csv_file = []
     print(res['matches'])
     for i in res['matches']:
-      a = (str(i).split(","))[1]
-      
-      csv_file.append([i['id'], a])
+        a = (str(i).split(","))[1]
+
+        csv_file.append([i['id'], a])
     global csv_data
     csv_data = csv_file
 
 
-def index(ques,ansemb,meta):
+def index(ques, ansemb, meta):
 
     # Upsert vector to Pinecone
     pc.Index('ques-ans').upsert([(str(ques), list(ansemb), meta)])
     # if '10' in ques:
-        
-        # start_server(webio_view(/),port=8000)
-        
-    return True
 
+    # start_server(webio_view(/),port=8000)
+
+    return True
 
 
 def extract_resume_details(pdf_file):
@@ -58,14 +62,17 @@ def extract_resume_details(pdf_file):
     with open(result, "r", encoding='utf-8') as f:
         return f.read()
 
+
 def question_to_audio(question):
     tts = gTTS(text=question, lang='en')
     audio_file = question+'.mp3'
     tts.save(audio_file)
     return audio_file
+
+
 def question_eval(questi, answer):
     global question
-    question=questi
+    question = questi
     client = Client("https://sujanmidatani-questioneval.hf.space/")
     result = client.predict(
         question,  # str in 'question' Textbox component
@@ -75,30 +82,30 @@ def question_eval(questi, answer):
         api_name="/predict"
     )
     grading_measures = result[1]  # Extract the grading measures from the tuple
-    evaluation_result = result[0]  # Extract the evaluation result from the tuple
+    # Extract the evaluation result from the tuple
+    evaluation_result = result[0]
     return grading_measures, evaluation_result
 # @app.route('/vinay', methods=['POST'])
+
+
 def vinay():
     finalizePC()
     csv_file = csv_data
     # Get the JSON dictionary, role, and experience from the form
-    
-        
-    
-   
+
     client = Client("https://sujanmidatani-finalgrading.hf.space/")
     result = client.predict(
-    csv_file,  # str in 'csv_file' FileUpload component
-    json_dict,  # str in 'resume' Textbox component
-    role,  # str in 'role' Textbox component
-    experience,  # str in 'experience' Textbox component
-    api_name="/predict"
+        csv_file,  # str in 'csv_file' FileUpload component
+        json_dict,  # str in 'resume' Textbox component
+        role,  # str in 'role' Textbox component
+        experience,  # str in 'experience' Textbox component
+        api_name="/predict"
     )
     print(result)
-    
-    index=pc.Index('ques-ans')
+
+    index = pc.Index('ques-ans')
     index.delete(delete_all=True)
-    
+
     return result.split("\n")
 
 
@@ -108,9 +115,10 @@ def questions_generator(resume_details, rol, experienc):
     global role
     role = rol
     global experience
-    experience = experienc 
+    experience = experienc
 
-    client = Client("https://sujanmidatani-resume-details-to-questions.hf.space/")
+    client = Client(
+        "https://sujanmidatani-resume-details-to-questions.hf.space/")
     result = client.predict(
         resume_details,  # str in 'resume' Textbox component
         role,  # str in 'role' Textbox component
@@ -125,7 +133,6 @@ def questions_generator(resume_details, rol, experienc):
     return zip(questions, audio_files), len(questions)
 
 
-
 @app.route('/', methods=['GET', 'POST'])
 def home():
     if request.method == 'POST':
@@ -134,7 +141,8 @@ def home():
         experience = request.form.get('experience')
         pdf_file.save(secure_filename(pdf_file.filename))
         resume_details = extract_resume_details(pdf_file.filename)
-        result, total_questions = questions_generator(resume_details, role, experience)
+        result, total_questions = questions_generator(
+            resume_details, role, experience)
         return render_template_string('''
     
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
@@ -157,7 +165,6 @@ def home():
     <a href="/">Back</a>
 
 ''', result=result, total_questions=total_questions)
-
 
     return '''
         <html>
@@ -237,15 +244,21 @@ def home():
         </body>
         </html>
     '''
+
+
 @app.route('/submit', methods=['POST'])
 def submit_answers():
-    
-    result=vinay()
+
+    result = vinay()
     return render_template('result1.html', final_grading=result)
+
+
 @app.route('/result')
 def show_result():
     result = request.args.get('result')
     return render_template('result1.html', result=result)
+
+
 @app.route('/record')
 def record():
     global question
@@ -253,10 +266,14 @@ def record():
 
     return render_template('record.html', question=question)
 
+
 print(question)
+
+
 @app.route('/audio/<path:filename>')
 def serve_audio(filename):
     return send_file(filename, mimetype='audio/mp3')
+
 
 @app.route('/upload', methods=['POST'])
 def upload():
@@ -266,8 +283,9 @@ def upload():
     request.files['audio'].save(file.filename)
     client = Client("https://sujanmidatani-speechtotext.hf.space/")
     result = client.predict(
-				file.filename,	# str (filepath or URL to file) in 'audio' Audio component
-				api_name="/predict"
+        # str (filepath or URL to file) in 'audio' Audio component
+        file.filename,
+        api_name="/predict"
     )
 
     # Retrieve the text output from the response
@@ -280,19 +298,17 @@ def upload():
 
 # Save JSON contents in a variable
     print(json_data[list(json_data.keys())[-1]]["score"])
-    print("-------",grading_measures)
-    print("=========",evaluation_result)
+    print("-------", grading_measures)
+    print("=========", evaluation_result)
     # print(grading_measures)
-    ques_id=question
-    answ_embed=gen_embed(answer)
-    meta_d={"score":json_data[list(json_data.keys())[-1]]["score"]}
-    
-    index(ques_id,answ_embed,meta_d)
-        
+    ques_id = question
+    answ_embed = gen_embed(answer)
+    meta_d = {"score": json_data[list(json_data.keys())[-1]]["score"]}
+
+    index(ques_id, answ_embed, meta_d)
 
     return render_template('index1.html')
 
 
-
 if __name__ == '__main__':
-    app.run(host='localhost', port=8080, debug=True)
+    app.run(debug=True)
