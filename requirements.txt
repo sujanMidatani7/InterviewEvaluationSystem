@@ -8,3 +8,4 @@ openai
 pinecone-client
 requests
 python-dotenv
+gunicorn
