@@ -1,61 +1,62 @@
 <!--record.html-->
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <title>Record Audio</title>
     <script src="https://cdn.jsdelivr.net/npm/recordrtc/RecordRTC.js"></script>
     <style>
-      body {
-        font-family: Arial, sans-serif;
-      }
+        body {
+    font-family: Arial, sans-serif;
+}
 
-      h1 {
-        color: #333;
-        font-size: 24px;
-        margin-bottom: 20px;
-      }
+h1 {
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
 
-      p#question {
-        color: #666;
-        font-size: 18px;
-        margin-bottom: 10px;
-      }
+p#question {
+    color: #666;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
 
-      button {
-        background-color: #4caf50;
-        color: white;
-        padding: 10px 20px;
-        border: none;
-        cursor: pointer;
-        margin-top: 10px;
-      }
+button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    margin-top: 10px;
+}
 
-      button:disabled {
-        background-color: #aaa;
-        cursor: not-allowed;
-      }
+button:disabled {
+    background-color: #aaa;
+    cursor: not-allowed;
+}
 
-      #status {
-        margin-top: 20px;
-        font-size: 16px;
-      }
+#status {
+    margin-top: 20px;
+    font-size: 16px;
+}
 
-      #audio-container {
-        margin-top: 20px;
-      }
+#audio-container {
+    margin-top: 20px;
+}
 
-      audio {
-        width: 100%;
-        margin-top: 10px;
-      }
+audio {
+    width: 100%;
+    margin-top: 10px;
+}
 
-      #error-message {
-        color: red;
-        font-size: 16px;
-      }
+#error-message {
+    color: red;
+    font-size: 16px;
+}
+
     </style>
-  </head>
-  <body>
+</head>
+<body>
     <h1>Record Audio</h1>
     <p id="question">Question: {{ question }}</p>
     <button id="start" onclick="startRecording()">Start Recording</button>
@@ -67,75 +68,81 @@
     <div id="audio-container"></div>
 
     <script>
-      var recorder;
-      var audioContainer = document.getElementById("audio-container");
-      var statusElement = document.getElementById("status");
-      var mimeType = "audio/wav";
-      // Set the desired audio format
-      function rerecordAudio() {
-        audioContainer.innerHTML = ""; // Clear the previously recorded audio
-        document.getElementById("upload").disabled = true;
-        document.getElementById("rerecord").disabled = true;
-        document.getElementById("start").disabled = false;
-        statusElement.innerHTML = "";
-      }
+        var recorder;
+        var audioContainer = document.getElementById('audio-container');
+        var statusElement = document.getElementById('status');
+        var mimeType = 'audio/wav';
+ // Set the desired audio format
+ function rerecordAudio() {
+    audioContainer.innerHTML = ''; // Clear the previously recorded audio
+    document.getElementById('upload').disabled = true;
+    document.getElementById('rerecord').disabled = true;
+    document.getElementById('start').disabled = false;
+    statusElement.innerHTML = '';
+}
 
-      function startRecording() {
-        navigator.mediaDevices
-          .getUserMedia({ audio: true })
-          .then(function (stream) {
-            recorder = new RecordRTC(stream, {
-              type: "audio",
-              mimeType: mimeType,
-              sampleRate: 16000,
-            });
+function startRecording() {
+    navigator.mediaDevices.getUserMedia({ audio: true })
+        .then(function (stream) {
+            recorder = new RecordRTC(stream, { type: 'audio', mimeType: mimeType, sampleRate: 16000 });
             recorder.startRecording();
-            statusElement.innerHTML = "Recording...";
-            document.getElementById("start").disabled = true;
-            document.getElementById("rerecord").disabled = true;
-            document.getElementById("stop").disabled = false;
-          })
-          .catch(function (error) {
-            console.error("Error accessing microphone:", error);
-          });
-      }
-
-      function stopRecording() {
-        recorder.stopRecording(function () {
-          statusElement.innerHTML = "Recording stopped.";
-          var blob = recorder.getBlob();
-          var audioElement = document.createElement("audio");
-          audioElement.controls = true;
-          audioElement.src = URL.createObjectURL(blob);
-          audioContainer.appendChild(audioElement);
-          document.getElementById("stop").disabled = true;
-          document.getElementById("upload").disabled = false;
-          document.getElementById("rerecord").disabled = false; // Enable the "Rerecord" button
+            statusElement.innerHTML = 'Recording...';
+            document.getElementById('start').disabled = true;
+            document.getElementById('rerecord').disabled = true;
+            document.getElementById('stop').disabled = false;
+        })
+        .catch(function (error) {
+            console.error('Error accessing microphone:', error);
         });
-      }
+}
 
-      function uploadRecording() {
-        recorder.getDataURL(function (dataURL) {
-          var formData = new FormData();
-          var blob = recorder.getBlob();
-          formData.append("audio", blob, "rec.mp3"); // Set the desired file extension
 
-          fetch("/upload", {
-            method: "POST",
-            body: formData,
-          })
-            .then(function (response) {
-              return response.text();
-            })
-            .then(function (text) {
-              console.log(text);
-              alert("Audio uploaded successfully!");
-            })
-            .catch(function (error) {
-              console.error("Error uploading audio:", error);
-            });
-        });
-      }
+        function stopRecording() {
+    recorder.stopRecording(function () {
+        statusElement.innerHTML = 'Recording stopped.';
+        var blob = recorder.getBlob();
+        var audioElement = document.createElement('audio');
+        audioElement.controls = true;
+        audioElement.src = URL.createObjectURL(blob);
+        audioContainer.appendChild(audioElement);
+        document.getElementById('stop').disabled = true;
+        document.getElementById('upload').disabled = false;
+        document.getElementById('rerecord').disabled = false; // Enable the "Rerecord" button
+    });
+}
+
+
+function uploadRecording() {
+  // Show loading symbol and text
+  statusElement.innerHTML = "Uploading...";
+  
+  recorder.getDataURL(function (dataURL) {
+    var formData = new FormData();
+    var blob = recorder.getBlob();
+    formData.append("audio", blob, "rec.mp3"); // Set the desired file extension
+
+    fetch("/upload", {
+      method: "POST",
+      body: formData,
+    })
+      .then(function (response) {
+        return response.text();
+      })
+      .then(function (text) {
+        console.log(text);
+        // Hide loading symbol and text
+        statusElement.innerHTML = "";
+        alert("Audio uploaded successfully!");
+      })
+      .catch(function (error) {
+        console.error("Error uploading audio:", error);
+        // Hide loading symbol and display error message
+        statusElement.innerHTML = "Upload failed.";
+      });
+  });
+}
+
+        
     </script>
-  </body>
+</body>
 </html>
