@@ -170,73 +170,91 @@ def home():
         <html>
         <head>
             <title>Interview Simulation System</title>
-            <style>
+             <style>
                 .question-block {
-                    margin-bottom: 20px;
-                    border: 1px solid #ddd;
-                    padding: 10px;
-                    border-radius: 5px;
-                    background-color: #fff;
-                    box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
-                }
-                audio {
-                    margin-top: 10px;
-                    width: 100%;
-                }
-                body {
-                    font-family: Arial, sans-serif;
-                    margin: 0;
-                    padding: 0;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    height: 100vh;
-                    background-color: #f0f0f0;
-                }
-                form {
-                    text-align: center;
-                    padding: 20px;
-                    border: 1px solid #ddd;
-                    border-radius: 10px;
-                    background-color: #fff;
-                    width: 50%;
-                    box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
-                }
-                input[type="submit"] {
-                    padding: 10px 20px;
-                    border: none;
-                    background-color: #4CAF50;
-                    color: #fff;
-                    cursor: pointer;
-                    border-radius: 5px;
-                    font-size: 16px;
-                }
-                input[type="submit"]:hover {
-                    background-color: #45a049;
-                }
-                input[type="file"] {
-                    margin-bottom: 10px;
-                }
-                input[type="text"] {
-                    padding: 10px;
-                    width: 100%;
-                    margin-bottom: 10px;
-                }
-                h1 {
-                    text-align: center;
-                    margin-bottom: 30px;
-                }
-                a {
-                    display: block;
-                    text-align: center;
-                    margin-top: 20px;
-                }
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #fff;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+audio {
+  margin-top: 10px;
+  width: 100%;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f0f0f0;
+}
+
+form {
+  text-align: center;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background-color: #fff;
+  width: 50%;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+input[type="submit"] {
+  padding: 10px 20px;
+  border: none;
+  background-color: #4CAF50;
+  color: #fff;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+input[type="submit"]:hover {
+  background-color: #45a049;
+}
+
+input[type="file"] {
+  margin-bottom: 10px;
+}
+
+input[type="text"] {
+  padding: 10px;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+a {
+  display: block;
+  text-align: center;
+  margin-top: 20px;
+}
+
+label {
+  display: block;
+  text-align: left;
+   
+  font-weight: bold;
+}
+
             </style>
         </head>
         <body>
         <form method="post" enctype="multipart/form-data">
             <h1>Interview Evaluation System</h1>
-            <input type="file" name="pdf_file">
+            <label for="pdf_file">Upload Resume</label>
+            <input type="file" name="pdf_file" id="pdf_file">
             <input type="text" name="role" placeholder="Enter Role">
             <input type="text" name="experience" placeholder="Enter Experience">
             <input type="submit" value="start Interview">
